@@ -1,0 +1,34 @@
+version: '3'
+services:
+  server:
+    build: ./server
+    command: /bin/sh -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - ./server:/myapp/server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  client:
+    build: ./client
+    command: "npm run start"
+    volumes:
+      - ./client:/myapp/client
+    ports:
+      - "3001:3000"
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'root'
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+    driver: local
