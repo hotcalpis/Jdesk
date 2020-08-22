@@ -9,12 +9,12 @@ let nodeStyle = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  // cursor: "move",
   height: "80px",
   width: "80px",
   backgroundColor: "aqua",
 };
 
+// propsの代わり
 const props_left = 50;
 const props_top = 50;
 
@@ -23,9 +23,26 @@ export default class Node extends React.Component {
     super(props);
     this.state = {
       title: '',
-      left: props_left,
-      top: props_top,
+      position: {
+        x: props_left,
+        y: props_top,
+      },
     };
+    this.handleDrag = this.handleDrag.bind(this);
+    this.handleStop = this.handleStop.bind(this);
+  }
+
+  handleDrag(e, position) {
+    const {x, y} = position;
+    this.setState({
+      position: {x, y}
+    });
+  }
+
+  handleStop(e, position) {
+    const {x, y} = position;
+    // axiosでserverに座標を送信
+    // react-draggableの座標は相対かも？要調整？
   }
 
   componentDidMount() {
@@ -35,8 +52,8 @@ export default class Node extends React.Component {
       justifyContent: "center",
       alignItems: "center",
       cursor: "move",
-      left: this.state.left,
-      top: this.state.top,
+      left: this.state.position.x,
+      top: this.state.position.y,
       height: "80px",
       width: "80px",
       backgroundColor: "aqua",
@@ -56,7 +73,7 @@ export default class Node extends React.Component {
 
   render() {
     return (
-      <Draggable>
+      <Draggable handle=".node" defaultPosition={{ x: 0, y: 0 }} position={this.state.position} onDrag={this.handleDrag} onStop={this.handleStop}>
         <div className="node" style={nodeStyle}>{this.state.title}</div>
       </Draggable>
     );
