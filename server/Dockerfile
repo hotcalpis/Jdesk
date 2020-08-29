@@ -21,5 +21,3 @@ RUN \
   rm -rf ~/.gem
 
 COPY . /myapp/server
-
-EXPOSE 3000
