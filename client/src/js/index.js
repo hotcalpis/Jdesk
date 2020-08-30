@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Node from "./component/Node";
+import Desk from "./component/Desk";
 
-const node = document.getElementById('root');
-ReactDOM.render(<Node/>, node);
+const root = document.getElementById('root');
+ReactDOM.render(<Desk/>, root);

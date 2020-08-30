@@ -12,6 +12,7 @@ let nodeStyle = {
   height: "80px",
   width: "80px",
   backgroundColor: "aqua",
+  borderRadius: "50%",
 };
 
 // propsの代わり
@@ -51,12 +52,12 @@ export default class Node extends React.Component {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      cursor: "move",
       left: this.state.position.x,
       top: this.state.position.y,
       height: "80px",
       width: "80px",
       backgroundColor: "aqua",
+      borderRadius: "50%",
     };
     axios
       .get(JDESK_ENDPOINT)
