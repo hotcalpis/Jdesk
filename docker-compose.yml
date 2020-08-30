@@ -24,13 +24,12 @@ services:
   db:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: 'password'
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'root'
-    ports:
-      - "3306:3306"
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: root
     volumes:
       - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
 volumes:
   mysql_data:

@@ -8,8 +8,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 
 RUN gem install bundler
-COPY Gemfile /myapp/server/Gemfile
-COPY Gemfile.lock /myapp/server/Gemfile.lock
+COPY Gemfile* /myapp/server/
 
 RUN \
   echo 'gem: --no-document' >> ~/.gemrc && \
