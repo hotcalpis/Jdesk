@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 2020_08_09_073932) do
     t.string "title"
     t.text "description"
     t.integer "size"
+    t.integer "x"
+    t.integer "y"
     t.date "deadline"
     t.bigint "category_id"
     t.datetime "created_at", null: false
