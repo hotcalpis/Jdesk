@@ -2,17 +2,19 @@ import React from "react";
 import axios from "axios";
 import Draggable from 'react-draggable';
 
+const JDESK_ENDPOINT = 'http://localhost:3001/api/tasks';
+
 export default class Node extends React.Component {
   constructor(props) {
     super(props);
 
-    let nodeStyle = {
+    let style = {
       position: "absolute",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      left: this.props.x + Math.round(this.props.origin.x),
-      top: this.props.y + Math.round(this.props.origin.y),
+      left: this.props.x + this.props.origin.x,
+      top: this.props.y + this.props.origin.y,
       height: "80px",
       width: "80px",
       backgroundColor: "aqua",
@@ -20,7 +22,7 @@ export default class Node extends React.Component {
     };
 
     this.state = {
-      nodeStyle: nodeStyle,
+      style: style,
       title: this.props.title,
       position: {
         x: this.props.x,
@@ -38,16 +40,33 @@ export default class Node extends React.Component {
     });
   }
 
-  handleStop(e, position) {
-    const {x, y} = position;
-    // axiosでserverに座標を送信
-    // react-draggableの座標は相対かも？要調整？
+  handleStop(e) {
+    const id = this.props.id;
+
+    const origin = document.getElementById('origin').getBoundingClientRect();
+    let originX = origin.x;
+    let originY = origin.y;
+
+    const targetNode = e.target.getBoundingClientRect();
+    let targetX = targetNode.x;
+    let targetY = targetNode.y;
+
+    console.log(originX, targetX);
+
+    axios
+      .patch(JDESK_ENDPOINT + "/" + id, {x: targetX - originX, y: targetY - originY})
+      .then((results) => {
+        console.log("更新完了");
+      })
+      .catch(() => {
+        console.log("更新失敗");
+      });
   }
 
   render() {
     return (
-      <Draggable handle=".node" position={this.state.position} onDrag={this.handleDrag} onStop={this.handleStop}>
-        <div className="node" style={this.state.nodeStyle}>{this.state.title}</div>
+      <Draggable handle=".node" onDrag={this.handleDrag} onStop={this.handleStop}>
+        <div className="node" style={this.state.style}>{this.state.title}</div>
       </Draggable>
     );
   }
