@@ -29,18 +29,16 @@ export default class Node extends React.Component {
         y: this.props.y,
       },
     };
-    this.handleDrag = this.handleDrag.bind(this);
-    this.handleStop = this.handleStop.bind(this);
   }
 
-  handleDrag(e, position) {
+  handleDrag = (e, position) => {
     const {x, y} = position;
     this.setState({
       position: {x, y}
     });
   }
 
-  handleStop(e) {
+  handleStop = (e) => {
     const id = this.props.id;
 
     const origin = document.getElementById('origin').getBoundingClientRect();

@@ -19,7 +19,19 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-react', '@babel/preset-env']
+              presets: [
+                '@babel/preset-react',
+                [
+                '@babel/preset-env', {
+                  'useBuiltIns': 'entry',
+                  'targets': {
+                    'esmodules': true
+                  }
+                }],
+              ],
+              plugins: [
+                '@babel/plugin-proposal-class-properties',
+              ],
             }
           }
         ]

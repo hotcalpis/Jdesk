@@ -14,6 +14,7 @@ export default class Desk extends React.Component {
                 y: Math.round(window.innerHeight / 2),
             },
             nodes: [],
+            nodeKey: -1,
         };
     }
 
@@ -30,9 +31,33 @@ export default class Desk extends React.Component {
             });
     }
 
+    handleDoubleClick = (e) => {
+        const newNode = {
+            id: this.state.nodeKey--,
+            title: "new",
+            x: e.pageX - this.state.origin.x - 40,
+            y: e.pageY - this.state.origin.y - 40,
+        };
+        const nodes = this.state.nodes;
+        nodes.push(newNode);
+
+        axios
+            .post(JDESK_ENDPOINT, newNode)
+            .then((results) => {
+                console.log("作成完了");
+                this.setState({
+                    nodes: nodes,
+                });
+            })
+            .catch(() => {
+                console.log("作成失敗");
+            });
+        
+    }
+
     render() {
         return (
-            <div className="desk">
+            <div className="desk" onDoubleClick={this.handleDoubleClick}>
                 <Origin x={this.state.origin.x} y={this.state.origin.y} />
                 {this.state.nodes.map((node) => (
                     <Node origin={{x: this.state.origin.x, y: this.state.origin.y}} key={node.id} id={node.id} title={node.title} x={node.x} y={node.y}/>
