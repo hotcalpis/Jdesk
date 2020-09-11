@@ -32,6 +32,7 @@ export default class Node extends React.Component {
         y: this.props.y,
       },
       isEditable: false,
+      isDeleted: false,
     };
 
     this.wrapperRef = React.createRef();
@@ -68,9 +69,9 @@ export default class Node extends React.Component {
       this.setState({
         isEditable: true,
       });
-    } else if (e.target.className === "node") {
+    } else if (e.target.className !== "edit-node-title") {
       axios
-        .patch(JDESK_ENDPOINT + "/" + this.props.id, {x: targetX - originX, y: targetY - originY})
+        .patch(JDESK_ENDPOINT + '/' + this.props.id, {x: targetX - originX, y: targetY - originY})
         .then((results) => {
           this.setState({
             position: {
@@ -91,7 +92,7 @@ export default class Node extends React.Component {
       e.preventDefault();
       const title = e.target.value;
       axios
-        .patch(JDESK_ENDPOINT + "/" + this.props.id, {title: title})
+        .patch(JDESK_ENDPOINT + '/' + this.props.id, {title: title})
         .then((results) => {
           this.setState({
             title: results.data.data.title,
@@ -105,18 +106,33 @@ export default class Node extends React.Component {
     }
   }
 
+  deleteMyself = () => {
+    this.setState({
+      isDeleted: true,
+    });
+
+    axios
+      .delete(JDESK_ENDPOINT + '/' + this.props.id)
+      .then((results) => {
+        console.log("削除完了");
+      })
+      .catch(() => {
+        console.log("削除失敗");
+      });
+  }
+
   render() {
+    if (this.state.isDeleted === true) return null;
     return (
       <Draggable handle=".node" onStop={this.handleStop}>
         <div className="node" style={this.state.style}>
           {this.state.isEditable ? (
-            <div>
-              <EditMenu/>
+            <div ref={this.wrapperRef}>
+              <EditMenu deleteNode={this.deleteMyself}/>
               <input
                 className="edit-node-title"
                 defaultValue={this.state.title}
                 onKeyPress={this.handleKeyPress}
-                ref={this.wrapperRef}
               />
             </div>
           ) : (

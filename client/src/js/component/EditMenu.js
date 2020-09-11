@@ -8,7 +8,9 @@ export default class EditMenu extends React.Component {
 
     render() {
         return (
-            <div>EditMenu</div>
+            <div className="EditMenu">
+                <button onClick={this.props.deleteNode}>削除</button>
+            </div>
         );
     }
 }
