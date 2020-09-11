@@ -62,14 +62,14 @@ export default class Node extends React.Component {
     const origin = document.getElementById('origin').getBoundingClientRect();
     let originX = origin.x;
     let originY = origin.y;
-    const targetNode = e.target.getBoundingClientRect();
+    const targetNode = e.target.closest(".node").getBoundingClientRect();
     let targetX = targetNode.x;
     let targetY = targetNode.y;
     if (targetX - originX === this.state.position.x && targetY - originY === this.state.position.y) {
       this.setState({
         isEditable: true,
       });
-    } else if (e.target.className !== "edit-node-title") {
+    } else {
       axios
         .patch(JDESK_ENDPOINT + '/' + this.props.id, {x: targetX - originX, y: targetY - originY})
         .then((results) => {

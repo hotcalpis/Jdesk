@@ -31,6 +31,7 @@ export default class Desk extends React.Component {
     }
 
     handleDoubleClick = (e) => {
+        if (e.target.className !== "desk") return null;
         const newNode = {
             id: -1,
             title: "new",
