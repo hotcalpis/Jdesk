@@ -14,7 +14,6 @@ export default class Desk extends React.Component {
                 y: Math.round(window.innerHeight / 2),
             },
             nodes: [],
-            nodeKey: -1,
         };
     }
 
@@ -33,21 +32,23 @@ export default class Desk extends React.Component {
 
     handleDoubleClick = (e) => {
         const newNode = {
-            id: this.state.nodeKey--,
+            id: -1,
             title: "new",
-            x: e.pageX - this.state.origin.x - 40,
-            y: e.pageY - this.state.origin.y - 40,
+            x: e.pageX - this.state.origin.x - 45,
+            y: e.pageY - this.state.origin.y - 45,
         };
         const nodes = this.state.nodes;
         nodes.push(newNode);
 
+        // TODO: 同期を正確にしないとエラー出そう
         axios
             .post(JDESK_ENDPOINT, newNode)
             .then((results) => {
-                console.log("作成完了");
+                nodes.slice(-1)[0].id = results.data.data.id;
                 this.setState({
                     nodes: nodes,
                 });
+                console.log("作成完了");
             })
             .catch(() => {
                 console.log("作成失敗");
