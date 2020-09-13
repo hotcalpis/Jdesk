@@ -10,10 +10,11 @@ export default class Desk extends React.Component {
         super(props);
         this.state = {
             origin: {
-                x: Math.round(window.innerWidth / 2),
-                y: Math.round(window.innerHeight / 2),
+                x: 3000 / 2,
+                y: 2000 / 2,
             },
             nodes: [],
+            isScrolling: false,
         };
     }
 
@@ -28,6 +29,18 @@ export default class Desk extends React.Component {
             .catch(() => {
                 console.log('通信に失敗しました。');
             });
+    }
+
+    handleMouseDown = (e) => {
+        if (e.target.classList.contains("desk")) this.setState({isScrolling: true});
+    }
+
+    handleMouseMove = (e) => {
+        if (this.state.isScrolling) scrollBy(-e.movementX, -e.movementY);
+    }
+
+    handleMouseUp = (e) => {
+        this.setState({isScrolling: false});
     }
 
     handleDoubleClick = (e) => {
@@ -54,12 +67,11 @@ export default class Desk extends React.Component {
             .catch(() => {
                 console.log("作成失敗");
             });
-        
     }
 
     render() {
         return (
-            <div className="desk" onDoubleClick={this.handleDoubleClick}>
+            <div className="desk" ref={this.myRef} onMouseDown={this.handleMouseDown} onMouseMove={this.handleMouseMove} onMouseUp={this.handleMouseUp} onDoubleClick={this.handleDoubleClick}>
                 <Origin x={this.state.origin.x} y={this.state.origin.y} />
                 {this.state.nodes.map((node) => (
                     <Node origin={{x: this.state.origin.x, y: this.state.origin.y}} key={node.id} id={node.id} title={node.title} x={node.x} y={node.y}/>

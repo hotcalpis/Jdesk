@@ -124,7 +124,7 @@ export default class Node extends React.Component {
   render() {
     if (this.state.isDeleted === true) return null;
     return (
-      <Draggable handle=".node" onStop={this.handleStop}>
+      <Draggable handle=".node" bounds="parent" onStop={this.handleStop}>
         <div className="node" style={this.state.style}>
           {this.state.isEditable ? (
             <div ref={this.wrapperRef}>

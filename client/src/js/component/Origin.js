@@ -18,6 +18,10 @@ export default class Origin extends React.Component {
         };
     }
 
+    componentDidMount = () => {
+        window.scrollTo(this.props.x - window.innerWidth / 2, this.props.y - window.innerHeight / 2);
+    }
+
     render() {
         return (
             <div id="origin" style={this.state.style}></div>
