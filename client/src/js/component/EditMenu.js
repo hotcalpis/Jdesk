@@ -10,6 +10,11 @@ export default class EditMenu extends React.Component {
         return (
             <div className="EditMenu">
                 <button onClick={this.props.deleteNode}>削除</button>
+                <input
+                    className="edit-node-title"
+                    defaultValue={this.props.title}
+                    onKeyPress={this.handleKeyPress}
+                />
             </div>
         );
     }

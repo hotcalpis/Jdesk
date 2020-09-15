@@ -124,16 +124,11 @@ export default class Node extends React.Component {
   render() {
     if (this.state.isDeleted === true) return null;
     return (
-      <Draggable handle=".node" bounds="parent" onStop={this.handleStop}>
+      <Draggable handle=".node" bounds="parent" cancel=".EditMenu" onStop={this.handleStop}>
         <div className="node" style={this.state.style}>
           {this.state.isEditable ? (
             <div ref={this.wrapperRef}>
-              <EditMenu deleteNode={this.deleteMyself}/>
-              <input
-                className="edit-node-title"
-                defaultValue={this.state.title}
-                onKeyPress={this.handleKeyPress}
-              />
+              <EditMenu ref={this.wrapperRef} deleteNode={this.deleteMyself} title={this.state.title}/>
             </div>
           ) : (
             this.state.title
