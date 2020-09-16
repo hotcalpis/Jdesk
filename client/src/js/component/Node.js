@@ -129,6 +129,11 @@ export default class Node extends React.Component {
           {this.state.isEditable ? (
             <div ref={this.wrapperRef}>
               <EditMenu ref={this.wrapperRef} deleteNode={this.deleteMyself} title={this.state.title}/>
+              <input
+                  className="edit-node-title"
+                  defaultValue={this.state.title}
+                  onKeyPress={this.handleKeyPress}
+              />
             </div>
           ) : (
             this.state.title
