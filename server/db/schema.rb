@@ -22,7 +22,8 @@ ActiveRecord::Schema.define(version: 2020_08_09_073932) do
   create_table "tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.integer "size"
+    t.integer "width"
+    t.integer "height"
     t.integer "x"
     t.integer "y"
     t.date "deadline"

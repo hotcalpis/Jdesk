@@ -16,8 +16,8 @@ export default class Node extends React.Component {
       alignItems: "center",
       left: this.props.x + this.props.origin.x,
       top: this.props.y + this.props.origin.y,
-      height: 90,
-      width: 90,
+      width: this.props.width,
+      height: this.props.height,
       backgroundColor: "aqua",
       borderRadius: "17%",
       borderStyle: "solid",
@@ -31,6 +31,8 @@ export default class Node extends React.Component {
         x: this.props.x,
         y: this.props.y,
       },
+      width: this.props.width,
+      height: this.props.height,
       isEditable: false,
       isDeleted: false,
     };
@@ -107,17 +109,75 @@ export default class Node extends React.Component {
   }
 
   deleteMyself = () => {
-    this.setState({
-      isDeleted: true,
-    });
-
+    
     axios
-      .delete(JDESK_ENDPOINT + '/' + this.props.id)
-      .then((results) => {
-        console.log("削除完了");
+    .delete(JDESK_ENDPOINT + '/' + this.props.id)
+    .then((results) => {
+      this.setState({
+        isDeleted: true,
+      });
+      console.log("削除完了");
       })
       .catch(() => {
         console.log("削除失敗");
+      });
+  }
+
+  extendSize = () => {
+    axios
+      .patch(JDESK_ENDPOINT + '/' + this.props.id, {width: this.state.width + 10, height: this.state.height + 10})
+      .then((results) => {
+        this.setState({
+          style: {
+            position: "absolute",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            left: this.state.position.x + this.props.origin.x,
+            top: this.state.position.y + this.props.origin.y,
+            width: this.state.width + 10,
+            height: this.state.height + 10,
+            backgroundColor: "aqua",
+            borderRadius: "17%",
+            borderStyle: "solid",
+            borderWidth: 2, 
+          },
+          width: this.state.width + 10,
+          height: this.state.height + 10,
+        });
+        console.log("更新完了")
+      })
+      .catch(() => {
+        console.log("更新失敗")
+      });
+  }
+
+  shrinkSize = () => {
+    axios
+      .patch(JDESK_ENDPOINT + '/' + this.props.id, {width: this.state.width - 10, height: this.state.height - 10})
+      .then((results) => {
+        this.setState({
+          style: {
+            position: "absolute",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            left: this.state.position.x + this.props.origin.x,
+            top: this.state.position.y + this.props.origin.y,
+            width: this.state.width - 10,
+            height: this.state.height - 10,
+            backgroundColor: "aqua",
+            borderRadius: "17%",
+            borderStyle: "solid",
+            borderWidth: 2, 
+          },
+          width: this.state.width - 10,
+          height: this.state.height - 10,
+        });
+        console.log("更新完了")
+      })
+      .catch(() => {
+        console.log("更新失敗")
       });
   }
 
@@ -128,7 +188,7 @@ export default class Node extends React.Component {
         <div className="node" style={this.state.style}>
           {this.state.isEditable ? (
             <div ref={this.wrapperRef}>
-              <EditMenu ref={this.wrapperRef} deleteNode={this.deleteMyself} title={this.state.title}/>
+              <EditMenu ref={this.wrapperRef} deleteNode={this.deleteMyself} extendNode={this.extendSize} shrinkNode={this.shrinkSize} title={this.state.title}/>
               <input
                   className="edit-node-title"
                   defaultValue={this.state.title}

@@ -50,6 +50,8 @@ export default class Desk extends React.Component {
             title: "new",
             x: e.pageX - this.state.origin.x - 45,
             y: e.pageY - this.state.origin.y - 45,
+            width: 90,
+            height: 90,
         };
         const nodes = this.state.nodes;
         nodes.push(newNode);
@@ -74,7 +76,7 @@ export default class Desk extends React.Component {
             <div className="desk" ref={this.myRef} onMouseDown={this.handleMouseDown} onMouseMove={this.handleMouseMove} onMouseUp={this.handleMouseUp} onDoubleClick={this.handleDoubleClick}>
                 <Origin x={this.state.origin.x} y={this.state.origin.y} />
                 {this.state.nodes.map((node) => (
-                    <Node origin={{x: this.state.origin.x, y: this.state.origin.y}} key={node.id} id={node.id} title={node.title} x={node.x} y={node.y}/>
+                    <Node origin={{x: this.state.origin.x, y: this.state.origin.y}} key={node.id} id={node.id} title={node.title} width={node.width} height={node.height} x={node.x} y={node.y}/>
                 ))}
             </div>
         )

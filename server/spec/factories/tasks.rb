@@ -15,8 +15,9 @@ end
 #  id          :bigint           not null, primary key
 #  deadline    :date
 #  description :text(65535)
-#  size        :integer
+#  height      :integer
 #  title       :string(255)
+#  width       :integer
 #  x           :integer
 #  y           :integer
 #  created_at  :datetime         not null
